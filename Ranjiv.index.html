@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free Trial</title>
+</head>
+<body>
+    <h1>Sign Up for a Free Trial!</h1>
+    <form action="/submit" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Sign Up</button>
+    </form>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="stop-camera">Stop Camera</button>
+    <script>
+        const video = document.getElementById('video');
+        let stream;
+
+        // Function to start the camera
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(s => {
+                    stream = s;
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error('Error accessing camera: ', err);
+                });
+        }
+
+        // Function to stop the camera
+        function stopCamera() {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+                console.log('Camera stopped.');
+            }
+        }
+
+        // Start the camera when the page loads
+        startCamera();
+
+        // Add event listener to the stop button
+        document.getElementById('stop-camera').addEventListener('click', stopCamera);
+    </script>
+</body>
+</html>
